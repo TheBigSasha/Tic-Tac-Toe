@@ -2,8 +2,6 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class TicTacToe {
-    //TODO: Code this uwu
-    //Could steal from https://junilearning.com/blog/coding-projects/java-beginner-tic-tac-toe-tutorial/
 
     private Boolean[][] board;
     private Boolean lastPlayed;
@@ -12,7 +10,8 @@ public class TicTacToe {
         board = new Boolean[gridSize][gridSize];
     }
 
-    public void play(int x,int y,  Boolean xOrO){
+    public String play(int x,int y,  Boolean xOrO){
+        String output = "";
         //Checks to make sure that the play is inside the board
         if(y > board.length - 1 || x > board[0].length - 1){
             throw new IllegalArgumentException("Coordinate is outside of the board");
@@ -37,17 +36,19 @@ public class TicTacToe {
             //Declare the winner
 
             if(winner(board)){
-                System.out.println("X wins");
+                output = "X wins";
             }else{
-                System.out.println("O wins");
+                output = "O wins";
             }
 
             //Display the board!
-            display();
+            toString();
 
             //Clear the board!
             board = new Boolean[board.length][board.length];
         }
+
+        return output;
     }
 
     static Boolean winner(Boolean[][] board){
@@ -159,28 +160,35 @@ public class TicTacToe {
         return null;
     }
 
-    public void display(){
+    public String toString(){
+        StringBuilder output = new StringBuilder();
         for(Boolean[] row : board){
             for(Boolean item : row){
                 if(item == null){
-                    System.out.print("-");
+                    output.append("-");
                 }else if(item){
-                    System.out.print("x");
+                    output.append("x");
                 }else{
-                    System.out.print("o");
+                    output.append("o");
                 }
             }
-            System.out.println();
+            output.append("\n");
         }
+        return output.toString();
     }
 
     public static void main(String[] args){
+        //Set up game (create game object)
+
         Scanner scanner = new Scanner(System.in);
         System.out.println("How big of a board do you want?");
         int boardSize = scanner.nextInt();
         TicTacToe game = new TicTacToe(boardSize);
         System.out.println("How many players? (1 or 2)");
         int players = scanner.nextInt();
+
+
+        //Select different play styles depending on AI or not
         if(players > 1){
             twoPlayer(game);
         }else{
@@ -199,12 +207,12 @@ public class TicTacToe {
                 playerBool = true;
             }
             System.out.println(player+"'s turn!");
-            game.display();
+            System.out.println(game);
             System.out.println("Specify X coordinate");
             int xCoord = scanner.nextInt();
             System.out.println("Specify Y coordinate");
             int yCoord = scanner.nextInt();
-            game.play(xCoord,yCoord,playerBool);
+            System.out.println(game.play(xCoord,yCoord,playerBool));
             xTurn = !xTurn;
         }
     }
@@ -223,14 +231,14 @@ public class TicTacToe {
                 player = "X";
                 playerBool = true;
                 System.out.println(player + "'s turn!");
-                game.display();
+                System.out.println(game);
 
                 boolean hasPlayed = false;
                 while(!hasPlayed){
                     int xCoord = rand.nextInt(game.board.length);
                     int yCoord = rand.nextInt(game.board.length);
                     try {
-                        game.play(xCoord, yCoord, playerBool);
+                        System.out.println(game.play(xCoord,yCoord,playerBool));
                         hasPlayed = true;
                     }catch(Exception ex){
                         hasPlayed = false;
@@ -238,12 +246,12 @@ public class TicTacToe {
                 }
             }else {
                 System.out.println(player + "'s turn!");
-                game.display();
+                System.out.println(game);
                 System.out.println("Specify X coordinate");
                 int xCoord = scanner.nextInt();
                 System.out.println("Specify Y coordinate");
                 int yCoord = scanner.nextInt();
-                game.play(xCoord, yCoord, playerBool);
+                System.out.println(game.play(xCoord,yCoord,playerBool));
             }
             xTurn = !xTurn;
 
