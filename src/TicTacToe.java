@@ -1,3 +1,4 @@
+import java.util.Random;
 import java.util.Scanner;
 
 public class TicTacToe {
@@ -11,9 +12,9 @@ public class TicTacToe {
         board = new Boolean[gridSize][gridSize];
     }
 
-    public void play(int x, int y, Boolean xOrO){
+    public void play(int x,int y,  Boolean xOrO){
         //Checks to make sure that the play is inside the board
-        if(x > board.length - 1 || y > board[0].length - 1){
+        if(y > board.length - 1 || x > board[0].length - 1){
             throw new IllegalArgumentException("Coordinate is outside of the board");
         }
 
@@ -23,13 +24,13 @@ public class TicTacToe {
         }
 
         //Check to make sure that there isn't something already in that spot
-        if(board[x][y] != null){
+        if(board[y][x] != null){
             throw new IllegalArgumentException("There is already a symbol in this spot");
         }
 
 
         //All checks are passed, we can make this move
-        board[x][y] = xOrO;
+        board[y][x] = xOrO;
 
         if(winner(board) != null){
 
@@ -178,6 +179,17 @@ public class TicTacToe {
         System.out.println("How big of a board do you want?");
         int boardSize = scanner.nextInt();
         TicTacToe game = new TicTacToe(boardSize);
+        System.out.println("How many players? (1 or 2)");
+        int players = scanner.nextInt();
+        if(players > 1){
+            twoPlayer(game);
+        }else{
+            csStudent(game);
+        }
+    }
+
+    public static void twoPlayer(TicTacToe game){
+        Scanner scanner = new Scanner(System.in);
         boolean xTurn = false;
         while(true){
             String player = "O";
@@ -194,6 +206,47 @@ public class TicTacToe {
             int yCoord = scanner.nextInt();
             game.play(xCoord,yCoord,playerBool);
             xTurn = !xTurn;
+        }
+    }
+
+    /**
+     * A game mode for the loneliest of the lonely
+     */
+    public static void csStudent(TicTacToe game){
+        Scanner scanner = new Scanner(System.in);
+        Random rand = new Random();
+        boolean xTurn = false;
+        while(true){
+            String player = "O";
+            Boolean playerBool = false;
+            if(xTurn){
+                player = "X";
+                playerBool = true;
+                System.out.println(player + "'s turn!");
+                game.display();
+
+                boolean hasPlayed = false;
+                while(!hasPlayed){
+                    int xCoord = rand.nextInt(game.board.length);
+                    int yCoord = rand.nextInt(game.board.length);
+                    try {
+                        game.play(xCoord, yCoord, playerBool);
+                        hasPlayed = true;
+                    }catch(Exception ex){
+                        hasPlayed = false;
+                    }
+                }
+            }else {
+                System.out.println(player + "'s turn!");
+                game.display();
+                System.out.println("Specify X coordinate");
+                int xCoord = scanner.nextInt();
+                System.out.println("Specify Y coordinate");
+                int yCoord = scanner.nextInt();
+                game.play(xCoord, yCoord, playerBool);
+            }
+            xTurn = !xTurn;
+
         }
     }
 }
