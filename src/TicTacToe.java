@@ -124,10 +124,7 @@ public class TicTacToe {
 
     }
 
-    /**
-     *
-     */
-    static Boolean diagonalWinner(Boolean[][] board) {
+    static Boolean diagonalWinner(Boolean[][] board){
         Boolean firstCorner = board[0][0];
 
         boolean hasWonFirstDiagonal = true;
@@ -143,16 +140,17 @@ public class TicTacToe {
             }
         }
 
+        Boolean secondCorner = board[0][board.length-1];
         boolean hasWonSecondDiagonal = true;
-        if(firstCorner != null) {
+        if(secondCorner != null) {
             for (int i = board.length - 1; i >= 0; i--) {
-                if (!firstCorner.equals(board[i][i])) {
+                if (!secondCorner.equals(board[i][i])) {
                     hasWonSecondDiagonal = false;
                     break;
                 }
             }
             if(hasWonSecondDiagonal){
-                return firstCorner;
+                return secondCorner;
             }
         }
 
