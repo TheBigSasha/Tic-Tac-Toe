@@ -124,34 +124,52 @@ public class TicTacToe {
 
     }
 
-    static Boolean diagonalWinner(Boolean[][] board){
-        Boolean firstCorner = board[0][0];
+    public static Boolean diagonalWinner(Boolean[][] board){
+        Boolean first = board[0][0];
+        Boolean second = board[0][board.length - 1];
+        boolean checkFirst = true;
+        boolean checkSecond = true;
 
-        boolean hasWonFirstDiagonal = true;
-        if(firstCorner != null) {
-            for (int i = 0; i < board.length; i++) {
-                if (!firstCorner.equals(board[i][i])) {
-                    hasWonFirstDiagonal = false;
-                    break;
+        if(first == null){
+            checkFirst = false;
+        }
+
+        if(second == null){
+            checkSecond = false;
+        }
+
+        for(int i = 0; i < board.length; i++){
+            if(checkFirst){
+                //i,i
+                //0,0
+                //1,1
+                //2,2
+                //...
+                //length - 1, length - 1
+                if(!first.equals(board[i][i])){
+                    //Not null before .equals, maybe null after .equals
+                    checkFirst = false;
                 }
             }
-            if(hasWonFirstDiagonal){
-                return firstCorner;
+            if(checkSecond){
+                //i, length - 1 - i
+                //0, length,
+                //1, length -1
+                //...
+                //length, 0
+                if(!second.equals(board[i][board.length -1 - i])){
+                    //Not null before .equals, maybe null after .equals
+                    checkFirst = false;
+                }
             }
         }
 
-        Boolean secondCorner = board[0][board.length-1];
-        boolean hasWonSecondDiagonal = true;
-        if(secondCorner != null) {
-            for (int i = board.length - 1; i >= 0; i--) {
-                if (!secondCorner.equals(board[i][i])) {
-                    hasWonSecondDiagonal = false;
-                    break;
-                }
-            }
-            if(hasWonSecondDiagonal){
-                return secondCorner;
-            }
+        if(checkFirst){
+            return first;
+        }
+
+        if(checkSecond){
+            return  second;
         }
 
         return null;
